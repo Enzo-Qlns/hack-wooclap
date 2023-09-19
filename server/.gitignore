@@ -1,0 +1,11 @@
+Scripts
+bin
+Include
+Lib
+pyvenv.cfg
+
+.DS_Store
+
+app/components/__pycache__
+app/services/__pycache__
+app/test.py
