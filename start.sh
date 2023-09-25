@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#cd client && npm run build && cd ..
-
-docker rm --force server_hack_wooclap nginx_hack_wooclap && docker rmi --force nginx:1.15 apptaskme_server
-docker-compose -f docker-compose.yml up -d
+docker-compose down -v
+docker rm --force python-api-server react-client && docker rmi --force hack_wooclap_web-server hack_wooclap_web-client
+docker-compose up --build -d
