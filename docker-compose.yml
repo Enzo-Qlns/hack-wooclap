@@ -1,21 +1,35 @@
-version: '3'
-services:
-  # Service du client React
-  client:
-    container_name: react-client
-    build:
-      context: ./client  # Spécifiez le répertoire où se trouve le code du client React
-      dockerfile: Dockerfile  # Assurez-vous que vous avez un Dockerfile dans le répertoire du client
-    ports:
-      - "3000:3000"  # Port du client React
+version: '3.1'
 
-  # Service du serveur API Python
-  server:
-    container_name: python-api-server
+services:
+
+  nginx-hack-wooclap:
+    container_name: nginx-hack-wooclap
+    image: nginx-hack-wooclap:latest
     build:
-      context: ./server  # Spécifiez le répertoire où se trouve le code du serveur Python
-      dockerfile: Dockerfile  # Assurez-vous que vous avez un Dockerfile dans le répertoire du serveur
+      context: ./nginx
+      dockerfile: Dockerfile
+    restart: always
     ports:
-      - "5002:5002"  # Port du serveur API Python
+      - "8082:8082"
     depends_on:
-      - client  # Assurez-vous que le client React soit démarré avant le serveur Python
+      - server-hack-wooclap
+    networks:
+      - network-hack-wooclap
+    
+  server-hack-wooclap:
+    container_name: server-hack-wooclap
+    image: server-hack-wooclap:latest
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./server/app:/var/www/server
+    networks:
+      network-hack-wooclap:
+        aliases:
+          - server-hack-wooclap
+    command: python server/app.py
+
+networks:
+  network-hack-wooclap
