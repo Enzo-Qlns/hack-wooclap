@@ -9,12 +9,10 @@ services:
       context: .
       dockerfile: nginx/Dockerfile
     restart: always
-    ports:
-      - "8082:8082"
     depends_on:
       - server-hack-wooclap
     networks:
-      - network-hack-wooclap
+      - network
     
   server-hack-wooclap:
     container_name: server-hack-wooclap
@@ -26,10 +24,12 @@ services:
     volumes:
       - ./server/app:/var/www/server
     networks:
-      network-hack-wooclap:
+      network:
         aliases:
           - server-hack-wooclap
     command: python server/app.py
 
 networks:
-  network-hack-wooclap:
+  network:
+      external:
+        name: network-hack-wooclap
