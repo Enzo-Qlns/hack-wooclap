@@ -32,4 +32,4 @@ services:
 networks:
   network:
       external:
-        name: network-hack-wooclap
+        name: hack-wooclap-network
